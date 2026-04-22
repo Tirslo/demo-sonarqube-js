@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/user', (req, res) => {
   const username = req.query.name;
   const query = `SELECT * FROM users WHERE name = '${username}'`;
-  
+  eval(req.query.input);
   // 🔴 CODE SMELL: Console.log in production
   console.log("Executing DB query:", query);
   
