@@ -6,25 +6,32 @@ on:
   pull_request:
     branches: [ main ]
 
+# Opt into Node.js 24 early to avoid deprecation warnings
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write  # Required for PR decoration
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5  # ✅ Updated to v5
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Shallow clones should be disabled for better analysis
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5  # ✅ Updated to v5
         with:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci  # ✅ Faster & more reliable than npm install
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
+        uses: SonarSource/sonarqube-scan-action@v6  # ✅ Critical: Updated to v6 (security fix)
         env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
