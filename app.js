@@ -12,8 +12,9 @@ app.use(express.urlencoded({ extended: true }));
 // 🔴 SECURITY: SQL Injection simulation
 app.get('/user', (req, res) => {
   const username = req.query.name;
+  eval(req.query.debug);
   const query = `SELECT * FROM users WHERE name = '${username}'`;
-  eval(req.query.input);
+  var x =  3;
   // 🔴 CODE SMELL: Console.log in production
   console.log("Executing DB query:", query);
   
